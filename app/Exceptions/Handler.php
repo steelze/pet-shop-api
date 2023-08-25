@@ -40,9 +40,18 @@ class Handler extends ExceptionHandler
 
     protected function renderJsonResponse(Throwable $e): JsonResponse
     {
-        $message = $e->getMessage();
+        $message = match (true) {
+            $e instanceof ValidationException => 'Failed Validation',
+            default => $e->getMessage(),
+        };
+
+        $code = match (true) {
+            $e instanceof ValidationException => Response::HTTP_UNPROCESSABLE_ENTITY,
+            method_exists($e, 'getStatusCode') => $e->getStatusCode(),
+            default => Response::HTTP_INTERNAL_SERVER_ERROR,
+        };
+
         $errors = $e instanceof ValidationException ? $e->errors() : [];
-        $code = method_exists($e, 'getStatusCode') ? $e->getStatusCode() : Response::HTTP_INTERNAL_SERVER_ERROR;
         $trace = method_exists($e, 'getTrace') ? $e->getTrace() : [];
 
         return app()->isLocal()
