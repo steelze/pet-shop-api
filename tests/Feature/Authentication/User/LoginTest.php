@@ -29,9 +29,18 @@ class LoginTest extends TestCase
             ->assertJson(fn (AssertableJson $json) => $json->hasAll(['success', 'error'])->etc());
     }
 
+    public function test_admin_cannot_login_successful(): void
+    {
+        $user = User::factory()->admin()->state(['password' => 'password'])->create();
+        $response = $this->postJson('/api/v1/user/login', ['email' => $user->email, 'password' => 'password']);
+
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(['success', 'error'])->etc());
+    }
+
     public function test_user_can_login_successful(): void
     {
-        $user = User::factory()->state(['password' => 'password'])->create();
+        $user = User::factory()->user()->state(['password' => 'password'])->create();
         $response = $this->postJson('/api/v1/user/login', ['email' => $user->email, 'password' => 'password']);
 
         $response->assertStatus(Response::HTTP_OK)
