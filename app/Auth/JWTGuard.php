@@ -112,8 +112,8 @@ class JWTGuard implements Guard
      * @param  array  $credentials
      * @return bool
      */
-    protected function hasValidCredentials(Authenticatable $user, $credentials): bool
+    protected function hasValidCredentials(?Authenticatable $user, $credentials): bool
     {
-        return $user !== null && $this->provider->validateCredentials($user, $credentials);
+        return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }
 }
