@@ -5,6 +5,8 @@ namespace App\Services;
 use App\Exceptions\JWTException;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Illuminate\Http\Request;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
 use Lcobucci\JWT\Encoder;
@@ -54,13 +56,15 @@ class JWTService
     /**
      * Generate a JWT token with the specified claims.
      *
+     * @param string $subject The subject to include in the token.
      * @param array $claims The claims to include in the token.
      *
      * @return UnencryptedToken The generated JWT token.
      */
-    public function generateToken(array $claims): UnencryptedToken
+    public function generateToken(string $subject, array $claims = []): UnencryptedToken
     {
         $builder = $this->createBaseBuilder()
+            ->relatedTo($subject)
             ->issuedAt($this->clock->now())
             ->expiresAt($this->clock->now()->addMinutes(config('jwt.ttl')));
 
@@ -86,6 +90,42 @@ class JWTService
         $this->checkConstraints($parsedToken);
 
         return $parsedToken->claims()->all();
+    }
+
+    /**
+     * Get the JWT token from the "Authorization" header in the request.
+     *
+     * @param \Illuminate\Http\Request $request The incoming request instance.
+     *
+     * @return string|null The JWT token extracted from the header, or null if not present.
+     */
+    public function getTokenFromRequestHeader(Request $request): ?string
+    {
+        $header = $request->header('Authorization', '');
+        $position = strrpos($header, 'Bearer ');
+
+        if ($position === false) return null;
+
+        $header = substr($header, $position + 7);
+
+        $token = str_contains($header, ',') ? strstr($header, ',', true) : $header;
+
+        return $token;
+    }
+
+    /**
+     * Generate a JWT token for the given user.
+     *
+     * @param Authenticatable $user The user for whom the token will be generated.
+     *
+     * @return UnencryptedToken The generated JWT token for the user.
+     */
+    public function fromUser(Authenticatable $user): UnencryptedToken
+    {
+        $claims = [$user->getAuthIdentifierName() => $user->getAuthIdentifier()];
+        $token = $this->generateToken($user->id, $claims);
+
+        return $token;
     }
 
     /**

@@ -45,4 +45,9 @@ class User extends Authenticatable
     {
         return ['uuid'];
     }
+
+    public function getAuthIdentifierName()
+    {
+        return 'uuid';
+    }
 }
