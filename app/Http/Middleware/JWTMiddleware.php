@@ -23,13 +23,13 @@ class JWTMiddleware
         $token = $jwt->getTokenFromRequestHeader($request);
 
         if (!$token)  {
-            throw new UnauthorizedHttpException('jwt-auth', 'Token not provided');
+            throw new UnauthorizedHttpException('jwt-auth', 'Unauthorized');
         }
 
         try {
             $jwt->parseToken($token);
         } catch (JWTException $e) {
-            throw new UnauthorizedHttpException('jwt-auth', $e->getMessage(), $e->getPrevious(), $e->getCode());
+            throw new UnauthorizedHttpException('jwt-auth', 'Unauthorized', $e->getPrevious(), $e->getCode());
         }
 
         return $next($request);
