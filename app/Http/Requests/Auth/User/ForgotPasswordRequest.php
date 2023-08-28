@@ -4,7 +4,7 @@ namespace App\Http\Requests\Auth\User;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class PasswordResetLinkRequest extends FormRequest
+class ForgotPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

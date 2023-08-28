@@ -4,14 +4,14 @@ namespace App\Http\Controllers\Auth\User;
 
 use App\Helpers\RespondWith;
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Auth\User\PasswordResetLinkRequest;
+use App\Http\Requests\Auth\User\ForgotPasswordRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Password;
 use Symfony\Component\HttpFoundation\Response;
 
-class PasswordResetLinkController extends Controller
+class ForgotPasswordController extends Controller
 {
-    public function __invoke(PasswordResetLinkRequest $request): JsonResponse
+    public function __invoke(ForgotPasswordRequest $request): JsonResponse
     {
         $credentials = array_merge($request->only('email'), ['is_admin' => false]);
 
