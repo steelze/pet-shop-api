@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\PasswordResetLinkController;
+use App\Http\Controllers\Auth\User\ResetPasswordController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,5 +27,6 @@ Route::prefix('v1')->group(function() {
         // Authentication Routes
         Route::post('login', LoginController::class);
         Route::post('forgot-password', PasswordResetLinkController::class);
+        Route::post('reset-password-token', ResetPasswordController::class);
     });
 });
