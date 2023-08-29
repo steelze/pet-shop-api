@@ -1,5 +1,6 @@
 <?php
 
+use App\Helpers\RespondWith;
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\ResetPasswordController;
@@ -32,6 +33,7 @@ Route::prefix('v1')->group(function() {
 
         // Protected Routes
         Route::middleware('jwt.auth', 'can:user')->group(function() {
+            Route::get('/', fn (Request $request) => RespondWith::success($request->user()->toArray()));
             Route::put('edit', [ProfileController::class, 'edit']);
         });
     });
