@@ -3,12 +3,25 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\RespondWith;
+use App\Http\Requests\EditProfileRequest;
 use App\Models\User;
+use App\Repositories\UserRepository;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    public function edit(EditProfileRequest $request, User $user, UserRepository $repository): JsonResponse
+    {
+        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
+
+        $payload = array_merge($request->validated(), ['is_marketing' => $request->boolean('is_marketing')]);
+        $user = $repository->update($user, $payload);
+
+        return RespondWith::success($user->toArray());
+    }
+
     public function listing(Request $request): JsonResponse
     {
         $limit = $request->limit ?? 20;

@@ -26,7 +26,13 @@ class EditProfileRequest extends FormRequest
         return [
             'first_name' => 'required|min:3',
             'last_name' => 'required|min:3',
-            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->uuid)],
+            'email' => [
+                'required',
+                'email',
+                ($this->user)
+                    ? Rule::unique('users')->ignore($this->user->id)
+                    : Rule::unique('users')->ignore(Auth::user()->id),
+            ],
             'password' => 'required|confirmed',
             'avatar' => 'nullable|uuid',
             'address' => 'required',

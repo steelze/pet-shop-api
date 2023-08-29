@@ -53,6 +53,14 @@ class User extends Authenticatable
     }
 
     /**
+     * Get the route key for the model.
+     */
+    public function getRouteKeyName(): string
+    {
+        return 'uuid';
+    }
+
+    /**
      * Scope a query to only include admins.
      */
     public function scopeAdmins(Builder $query): void
