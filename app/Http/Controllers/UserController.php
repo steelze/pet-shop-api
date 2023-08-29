@@ -12,6 +12,14 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
+    public function delete(User $user, UserRepository $repository): JsonResponse
+    {
+        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
+        $repository->delete($user);
+
+        return RespondWith::success();
+    }
+
     public function edit(EditProfileRequest $request, User $user, UserRepository $repository): JsonResponse
     {
         abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
