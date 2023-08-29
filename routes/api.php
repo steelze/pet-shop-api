@@ -3,6 +3,7 @@
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\ResetPasswordController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,5 +29,10 @@ Route::prefix('v1')->group(function() {
         Route::post('login', LoginController::class);
         Route::post('forgot-password', ForgotPasswordController::class);
         Route::post('reset-password-token', ResetPasswordController::class);
+
+        // Protected Routes
+        Route::middleware('jwt.auth', 'can:user')->group(function() {
+            Route::put('edit', [ProfileController::class, 'edit']);
+        });
     });
 });
