@@ -5,8 +5,10 @@ namespace App\Exceptions;
 use App\Helpers\RespondWith;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Validation\UnauthorizedException;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -42,6 +44,7 @@ class Handler extends ExceptionHandler
     {
         $message = match (true) {
             $e instanceof ValidationException => 'Failed Validation',
+            $e instanceof AccessDeniedHttpException => 'Unauthorized: Not enough privileges',
             default => $e->getMessage(),
         };
 
