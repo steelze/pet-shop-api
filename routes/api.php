@@ -2,6 +2,7 @@
 
 use App\Helpers\RespondWith;
 use App\Http\Controllers\Auth\Admin\CreateAdminController;
+use App\Http\Controllers\Auth\Admin\LoginController as AdminLoginController;
 use App\Http\Controllers\Auth\User\CreateUserController;
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
@@ -45,6 +46,7 @@ Route::prefix('v1')->group(function() {
     Route::prefix('admin')->group(function() {
         // Authentication Routes
         Route::post('create', CreateAdminController::class);
+        Route::post('login', AdminLoginController::class);
 
         // Protected Routes
         Route::middleware('jwt.auth', 'can:admin')->group(function() {

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth\User;
+namespace App\Http\Controllers\Auth\Admin;
 
 use App\Helpers\RespondWith;
 use App\Http\Controllers\Controller;
@@ -12,7 +12,7 @@ class LoginController extends Controller
 {
     public function __invoke(LoginRequest $request): JsonResponse
     {
-        $credentials = array_merge($request->only(['email', 'password']), ['is_admin' => false]);
+        $credentials = array_merge($request->only(['email', 'password']), ['is_admin' => true]);
 
         if (!$token = auth()->attempt($credentials)) {
             return RespondWith::error('Failed to authenticate user', code: Response::HTTP_UNPROCESSABLE_ENTITY);
