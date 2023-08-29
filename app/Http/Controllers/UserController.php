@@ -12,16 +12,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function delete(User $user, UserRepository $repository): JsonResponse
+    public function delete(string $uuid, UserRepository $repository): JsonResponse
     {
+        $user = User::where('uuid', $uuid)->firstOrFail();
         abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
         $repository->delete($user);
 
         return RespondWith::success();
     }
 
-    public function edit(EditProfileRequest $request, User $user, UserRepository $repository): JsonResponse
+    public function edit(EditProfileRequest $request, string $uuid, UserRepository $repository): JsonResponse
     {
+        $user = User::where('uuid', $uuid)->firstOrFail();
         abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
 
         $payload = array_merge($request->validated(), ['is_marketing' => $request->boolean('is_marketing')]);

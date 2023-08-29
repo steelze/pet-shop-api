@@ -54,8 +54,8 @@ Route::prefix('v1')->group(function() {
         // Protected Routes
         Route::middleware('jwt.auth', 'can:admin')->group(function() {
             Route::get('user-listing', [UserController::class, 'listing']);
-            Route::put('user-edit/{user}', [UserController::class, 'edit']);
-            Route::delete('user-delete/{user}', [UserController::class, 'delete']);
+            Route::put('user-edit/{uuid}', [UserController::class, 'edit']);
+            Route::delete('user-delete/{uuid}', [UserController::class, 'delete']);
         });
     });
 });

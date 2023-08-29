@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Models\User;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
@@ -23,15 +24,17 @@ class EditProfileRequest extends FormRequest
      */
     public function rules(): array
     {
+        $user = ($this->uuid)
+            ? User::where('uuid', $this->uuid)->firstOrFail()
+            : Auth::user();
+
         return [
             'first_name' => 'required|min:3',
             'last_name' => 'required|min:3',
             'email' => [
                 'required',
                 'email',
-                ($this->user)
-                    ? Rule::unique('users')->ignore($this->user->id)
-                    : Rule::unique('users')->ignore(Auth::user()->id),
+                Rule::unique('users')->ignore($user->id),
             ],
             'password' => 'required|confirmed',
             'avatar' => 'nullable|uuid',
