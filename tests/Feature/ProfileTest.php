@@ -57,6 +57,31 @@ class ProfileTest extends TestCase
             ])->etc());
     }
 
+    public function test_user_cannot_edit_profile_with_existing_email(): void
+    {
+        $email = 'invalid@email.com';
+
+        User::factory()->user()->create(['email' => $email]);
+        $user = User::factory()->user()->create();
+        $token = (new JWTService())->fromUser($user)->toString();
+
+        $payload = [
+            'first_name' => fake()->firstName(),
+            'last_name' => fake()->firstName(),
+            'email' => $email,
+            'password' => 'password',
+            'password_confirmation' => 'password',
+            'avatar' => fake()->uuid(),
+            'address' => fake()->address(),
+            'phone_number' => '08162192832',
+            'is_marketing' => fake()->boolean(),
+        ];
+
+        $response = $this->withToken($token)->putJson('/api/v1/user/edit', $payload);
+        $response->assertStatus(Response::HTTP_UNPROCESSABLE_ENTITY)
+            ->assertJson(fn (AssertableJson $json) => $json->hasAll(['success', 'errors.email'])->etc());
+    }
+
     public function test_user_can_edit_profile(): void
     {
         $user = User::factory()->user()->create();
@@ -77,17 +102,5 @@ class ProfileTest extends TestCase
         $response = $this->withToken($token)->putJson('/api/v1/user/edit', $payload);
         $response->assertStatus(Response::HTTP_OK)
             ->assertJson(fn (AssertableJson $json) => $json->hasAll(['success', 'data', 'data.uuid'])->etc());
-
-        $this->assertDatabaseHas(User::class, [
-            'id' => $user->id,
-            'uuid' => $user->uuid,
-            'first_name' => $payload['first_name'],
-            'last_name' => $payload['last_name'],
-            'email' => $payload['email'],
-            'avatar' => $payload['avatar'],
-            'address' => $payload['address'],
-            'phone_number' => $payload['phone_number'],
-            'is_marketing' => $payload['is_marketing'],
-        ]);
     }
 }

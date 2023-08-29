@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Validation\Rule;
 
 class EditProfileRequest extends FormRequest
 {
@@ -24,7 +26,7 @@ class EditProfileRequest extends FormRequest
         return [
             'first_name' => 'required|min:3',
             'last_name' => 'required|min:3',
-            'email' => 'required|email',
+            'email' => ['required', 'email', Rule::unique('users')->ignore(Auth::user()->uuid)],
             'password' => 'required|confirmed',
             'avatar' => 'nullable|uuid',
             'address' => 'required',
