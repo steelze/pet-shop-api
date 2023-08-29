@@ -28,6 +28,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::prefix('v1')->group(function() {
+    Route::middleware('jwt.auth')
+        ->get('user', fn (Request $request) => RespondWith::success($request->user()->toArray()));
+
     // User Routes
     Route::prefix('user')->group(function() {
         // Authentication Routes
@@ -38,7 +41,6 @@ Route::prefix('v1')->group(function() {
 
         // Protected Routes
         Route::middleware('jwt.auth', 'can:user')->group(function() {
-            Route::get('/', fn (Request $request) => RespondWith::success($request->user()->toArray()));
             Route::put('edit', [ProfileController::class, 'edit']);
         });
     });

@@ -17,7 +17,7 @@ class UserController extends Controller
         $sortBy = in_array($request->sortBy, $allowedSortBy) ? $request->sortBy : null;
         $sortByDirection = $request->boolean('desc', false) ? 'desc' : 'asc';
 
-        $filterByMarketing = in_array($request->marketing, [1, 0]);
+        $filterByMarketing = in_array($request->marketing, [1, 0, '1', '0'], true);
 
         $users = User::users()
             ->when($request->first_name, fn($sql, $value) => $sql->where('first_name', 'like', "%$value%"))
