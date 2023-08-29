@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\RespondWith;
+use App\Http\Controllers\Auth\Admin\CreateAdminController;
 use App\Http\Controllers\Auth\User\CreateUserController;
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
@@ -37,6 +38,17 @@ Route::prefix('v1')->group(function() {
         Route::middleware('jwt.auth', 'can:user')->group(function() {
             Route::get('/', fn (Request $request) => RespondWith::success($request->user()->toArray()));
             Route::put('edit', [ProfileController::class, 'edit']);
+        });
+    });
+
+    // Admin Routes
+    Route::prefix('admin')->group(function() {
+        // Authentication Routes
+        Route::post('create', CreateAdminController::class);
+
+        // Protected Routes
+        Route::middleware('jwt.auth', 'can:admin')->group(function() {
+
         });
     });
 });
