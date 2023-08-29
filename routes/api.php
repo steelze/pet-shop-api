@@ -1,6 +1,7 @@
 <?php
 
 use App\Helpers\RespondWith;
+use App\Http\Controllers\Auth\User\CreateUserController;
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\ResetPasswordController;
@@ -27,6 +28,7 @@ Route::prefix('v1')->group(function() {
     // User Routes
     Route::prefix('user')->group(function() {
         // Authentication Routes
+        Route::post('create', CreateUserController::class);
         Route::post('login', LoginController::class);
         Route::post('forgot-password', ForgotPasswordController::class);
         Route::post('reset-password-token', ResetPasswordController::class);
