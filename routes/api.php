@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\ResetPasswordController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -50,7 +51,7 @@ Route::prefix('v1')->group(function() {
 
         // Protected Routes
         Route::middleware('jwt.auth', 'can:admin')->group(function() {
-
+            Route::get('user-listing', [UserController::class, 'listing']);
         });
     });
 });

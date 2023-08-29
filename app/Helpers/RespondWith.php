@@ -8,6 +8,14 @@ use Symfony\Component\HttpFoundation\Response;
 class RespondWith
 {
     /**
+     * @param mixed $data
+     */
+    public static function raw(mixed $data, int $code = Response::HTTP_OK): JsonResponse
+    {
+        return response()->json($data, $code);
+    }
+
+    /**
      * @param array<mixed, mixed> $data
      * @param array<mixed, mixed> $extra
      */

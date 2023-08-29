@@ -4,6 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -49,5 +50,21 @@ class User extends Authenticatable
     public function getAuthIdentifierName()
     {
         return 'uuid';
+    }
+
+    /**
+     * Scope a query to only include admins.
+     */
+    public function scopeAdmins(Builder $query): void
+    {
+        $query->where('is_admin', true);
+    }
+
+    /**
+     * Scope a query to only include non-admins.
+     */
+    public function scopeUsers(Builder $query): void
+    {
+        $query->where('is_admin', false);
     }
 }
