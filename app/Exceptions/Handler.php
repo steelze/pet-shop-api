@@ -3,9 +3,10 @@
 namespace App\Exceptions;
 
 use App\Helpers\RespondWith;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Illuminate\Http\JsonResponse;
-use Illuminate\Validation\UnauthorizedException;
+use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
@@ -45,6 +46,7 @@ class Handler extends ExceptionHandler
         $message = match (true) {
             $e instanceof ValidationException => 'Failed Validation',
             $e instanceof AccessDeniedHttpException => 'Unauthorized: Not enough privileges',
+            $e->getPrevious() instanceof ModelNotFoundException => Str::of($e->getMessage())->afterLast('\\')->trim('].')->append(' not found'),
             default => $e->getMessage(),
         };
 
