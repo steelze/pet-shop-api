@@ -1,0 +1,54 @@
+{
+    "name": "steelze/currency-exchange-rate",
+    "description": "Laravel package that exposes an API GET for currency converter",
+    "keywords": [
+        "steelze",
+        "currency-exchange-rate"
+    ],
+    "homepage": "https://github.com/steelze/currency-exchange-rate",
+    "license": "MIT",
+    "type": "library",
+    "authors": [
+        {
+            "name": "Odunayo Ogungbure",
+            "email": "sogungbure@gmail.com",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "php": "^8.0",
+        "illuminate/support": "^10.0"
+    },
+    "require-dev": {
+        "orchestra/testbench": "^6.0",
+        "phpunit/phpunit": "^10.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Steelze\\CurrencyExchangeRate\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Steelze\\CurrencyExchangeRate\\Tests\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "vendor/bin/phpunit",
+        "test-coverage": "vendor/bin/phpunit --coverage-html coverage"
+
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Steelze\\CurrencyExchangeRate\\CurrencyExchangeRateServiceProvider"
+            ],
+            "aliases": {
+                "CurrencyExchangeRate": "Steelze\\CurrencyExchangeRate\\CurrencyExchangeRateFacade"
+            }
+        }
+    }
+}
