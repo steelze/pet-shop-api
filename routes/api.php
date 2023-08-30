@@ -7,6 +7,7 @@ use App\Http\Controllers\Auth\User\CreateUserController;
 use App\Http\Controllers\Auth\User\ForgotPasswordController;
 use App\Http\Controllers\Auth\User\LoginController;
 use App\Http\Controllers\Auth\User\ResetPasswordController;
+use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -57,5 +58,20 @@ Route::prefix('v1')->group(function() {
             Route::put('user-edit/{uuid}', [UserController::class, 'edit']);
             Route::delete('user-delete/{uuid}', [UserController::class, 'delete']);
         });
+
+    });
+
+    Route::middleware('jwt.auth')->group(function() {
+        Route::controller(CategoryController::class)->prefix('category')->group(function() {
+            Route::post('create', 'create');
+            Route::put('{uuid}', 'update');
+            Route::delete('{uuid}', 'delete');
+        });
+    });
+
+    // Unprotected Routes
+    Route::controller(CategoryController::class)->group(function() {
+        Route::get('category/{uuid}', 'findOne');
+        Route::get('categories', 'listAll');
     });
 });
