@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f1c2dc938b4e16f5e8177db9e5f772f1",
+    "content-hash": "df5b6636d2fe22d14639d3f1b2855e98",
     "packages": [
         {
             "name": "brick/math",
@@ -3165,72 +3165,6 @@
                 }
             ],
             "time": "2023-04-15T23:01:58+00:00"
-        },
-        {
-            "name": "steelze/currency-exchange-rate",
-            "version": "dev-main",
-            "dist": {
-                "type": "path",
-                "url": "./packages/currency-exchange-rate",
-                "reference": "a5020f87b33aec68f0afa91c85ab8b865ceb22ee"
-            },
-            "require": {
-                "illuminate/support": "^10.0",
-                "php": "^8.0"
-            },
-            "require-dev": {
-                "orchestra/testbench": "^6.0",
-                "phpunit/phpunit": "^10.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Steelze\\CurrencyExchangeRate\\CurrencyExchangeRateServiceProvider"
-                    ],
-                    "aliases": {
-                        "CurrencyExchangeRate": "Steelze\\CurrencyExchangeRate\\CurrencyExchangeRateFacade"
-                    }
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Steelze\\CurrencyExchangeRate\\": "src"
-                }
-            },
-            "autoload-dev": {
-                "psr-4": {
-                    "Steelze\\CurrencyExchangeRate\\Tests\\": "tests"
-                }
-            },
-            "scripts": {
-                "test": [
-                    "vendor/bin/phpunit"
-                ],
-                "test-coverage": [
-                    "vendor/bin/phpunit --coverage-html coverage"
-                ]
-            },
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Odunayo Ogungbure",
-                    "email": "sogungbure@gmail.com",
-                    "role": "Developer"
-                }
-            ],
-            "description": "Laravel package that exposes an API GET for currency converter",
-            "homepage": "https://github.com/steelze/currency-exchange-rate",
-            "keywords": [
-                "currency-exchange-rate",
-                "steelze"
-            ],
-            "transport-options": {
-                "symlink": true,
-                "relative": true
-            }
         },
         {
             "name": "symfony/console",
@@ -10187,9 +10121,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "steelze/currency-exchange-rate": 20
-    },
+    "stability-flags": [],
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {
