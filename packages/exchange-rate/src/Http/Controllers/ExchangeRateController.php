@@ -5,7 +5,9 @@ namespace Steelze\ExchangeRate\Http\Controllers;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrencyException;
 use Steelze\ExchangeRate\ExchangeRate;
+use Steelze\ExchangeRate\Helpers\RespondWith;
 
 /**
  * Class ExchangeRateController
@@ -28,17 +30,16 @@ class ExchangeRateController
             'currency' => 'required|string',
         ]);
 
-        if ($validator->fails()) {
-            return response()->json(['failed to convert']);
+        if ($validator->fails()) return RespondWith::error('Failed to convert');
+
+        try {
+            $result = $exchangeRate->convertToCurrency($request->amount, $request->currency);
+        } catch (InvalidTargetCurrencyException $th) {
+            return RespondWith::error('Failed to convert: '.$th->getMessage());
+        } catch (\Throwable $th) {
+            return RespondWith::error('Failed to convert');
         }
 
-        // Get the amount and currency from the request
-        $amount = $request->amount;
-        $currency = $request->currency;
-
-        // Perform the currency conversion using the ExchangeRate service
-        $result = $exchangeRate->convertToCurrency($amount, $currency);
-
-        return response()->json($result->toArray());
+        return RespondWith::success($result->toArray());
     }
 }
