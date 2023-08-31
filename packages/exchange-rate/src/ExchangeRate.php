@@ -2,38 +2,53 @@
 
 namespace Steelze\ExchangeRate;
 
+use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
-use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
+use Steelze\ExchangeRate\Exceptions\ExchangeRateFetchException;
+use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrencyException;
 
 class ExchangeRate
 {
-    protected array $rates = [];
+    CONST EXCHANGE_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xmls';
 
-    protected function fetchCurrencies()
+
+    /**
+     * Fetches exchange rates from the European Central Bank.
+     *
+     * @return array
+     * @throws ExchangeRateFetchException
+     */
+    protected function fetchExchangeRates(): array
     {
-        $response = Http::get('https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml');
-        if ($response->failed()) {
-            throw new \Exception("Error fetching exchange rates");
-        }
+        try {
+            $response = Http::get(self::EXCHANGE_RATES_URL)->throw();
+            $xml = new SimpleXMLElement($response->body());
 
-        $xml = new SimpleXMLElement($response);
+            $exchangeRates = [];
 
-        foreach ($xml->Cube->Cube->Cube as $cube) {
-            $currency = (string) $cube['currency'];
-            $rate = (float) $cube['rate'];
+            foreach ($xml->Cube->Cube->Cube as $cube) {
+                $currency = (string) $cube['currency'];
+                $rate = (float) $cube['rate'];
 
-            $this->rates[$currency] = $rate;
+                $exchangeRates[$currency] = $rate;
+            }
+
+            return $exchangeRates;
+        } catch (RequestException $e) {
+            throw new ExchangeRateFetchException('Error fetching exchange rates', $e->getCode(), $e);
+        } catch (\Exception $e) {
+            throw new ExchangeRateFetchException('An error occurred while fetching exchange rates', $e->getCode(), $e);
         }
     }
 
     public function convertToCurrency(float $amount, string $currency): array
     {
-        $this->fetchCurrencies();
+        $exchangeRates = $this->fetchExchangeRates();
 
-        throw_if(!isset($this->rates[$currency]), new InvalidTargetCurrency);
+        throw_if(!isset($exchangeRates[$currency]), new InvalidTargetCurrencyException);
 
-        $rate = $this->rates[$currency];
+        $rate = $exchangeRates[$currency];
 
         $value = $amount * $rate;
 

@@ -4,7 +4,7 @@ namespace Steelze\ExchangeRate\Exceptions;
 
 use Exception;
 
-class InvalidTargetCurrency extends Exception
+class InvalidTargetCurrencyException extends Exception
 {
     /**
      * {@inheritdoc}
