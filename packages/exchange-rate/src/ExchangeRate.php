@@ -5,13 +5,13 @@ namespace Steelze\ExchangeRate;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
+use Steelze\ExchangeRate\DTO\ExchangeResultDTO;
 use Steelze\ExchangeRate\Exceptions\ExchangeRateFetchException;
 use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrencyException;
 
 class ExchangeRate
 {
-    CONST EXCHANGE_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xmls';
-
+    CONST EXCHANGE_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
 
     /**
      * Fetches exchange rates from the European Central Bank.
@@ -19,7 +19,7 @@ class ExchangeRate
      * @return array
      * @throws ExchangeRateFetchException
      */
-    protected function fetchExchangeRates(): array
+    public function fetchExchangeRates(): array
     {
         try {
             $response = Http::get(self::EXCHANGE_RATES_URL)->throw();
@@ -42,16 +42,31 @@ class ExchangeRate
         }
     }
 
-    public function convertToCurrency(float $amount, string $currency): array
+    /**
+     * Converts the given amount to the specified currency.
+     *
+     * @param float $amount
+     * @param string $currency
+     * @return ExchangeResultDTO
+     * @throws InvalidTargetCurrencyException
+     * @throws ExchangeRateFetchException
+     */
+    public function convertToCurrency(float $amount, string $currency): ExchangeResultDTO
     {
         $exchangeRates = $this->fetchExchangeRates();
 
-        throw_if(!isset($exchangeRates[$currency]), new InvalidTargetCurrencyException);
+        if (!isset($exchangeRates[$currency])) {
+            throw new InvalidTargetCurrencyException();
+        }
 
         $rate = $exchangeRates[$currency];
+        $convertedAmount = $amount * $rate;
 
-        $value = $amount * $rate;
-
-        return ['exchange_rate' => $rate, 'value' => $value];
+        return new ExchangeResultDTO(
+            amount: $amount,
+            toCurrency: $currency,
+            exchangeRate: $rate,
+            convertedAmount: $convertedAmount,
+        );
     }
 }

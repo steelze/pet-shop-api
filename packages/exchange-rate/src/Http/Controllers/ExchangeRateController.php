@@ -37,18 +37,8 @@ class ExchangeRateController
         $currency = $request->currency;
 
         // Perform the currency conversion using the ExchangeRate service
-        $data = $exchangeRate->convertToCurrency($amount, $currency);
+        $result = $exchangeRate->convertToCurrency($amount, $currency);
 
-        // Construct the response payload
-        $payload = [
-            'amount' => $amount,
-            'from_currency' => 'EUR', // Assuming the default is Euro
-            'to_currency' => $currency,
-            'exchange_rate' => $data['exchange_rate'],
-            'converted_amount' => $data['value'],
-        ];
-
-        // Return the response in JSON format
-        return response()->json($payload);
+        return response()->json($result->toArray());
     }
 }
