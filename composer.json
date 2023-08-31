@@ -10,7 +10,8 @@
         "laravel/framework": "^10.10",
         "laravel/sanctum": "^3.2",
         "laravel/tinker": "^2.8",
-        "lcobucci/jwt": "^5.0"
+        "lcobucci/jwt": "^5.0",
+        "steelze/exchange-rate": "dev-main"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -68,7 +69,7 @@
     "repositories": [
         {
             "type": "path",
-            "url": "./packages/currency-exchange-rate",
+            "url": "./packages/exchange-rate",
             "options": {
                 "symlink": true
             }
