@@ -4,6 +4,7 @@ namespace Steelze\ExchangeRate;
 
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
+use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
 
 class ExchangeRate
 {
@@ -30,9 +31,7 @@ class ExchangeRate
     {
         $this->fetchCurrencies();
 
-        if (!isset($this->rates[$currency])) {
-            throw new \Exception("Invalid source or target currency");
-        }
+        throw_if(!isset($this->rates[$currency]), new InvalidTargetCurrency);
 
         $rate = $this->rates[$currency];
 
