@@ -15,7 +15,7 @@ class ExchangeRateServiceProvider extends ServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/config.php' => config_path('currency-exchange-rate.php'),
+                __DIR__.'/../config/config.php' => config_path('exchange-rate.php'),
             ], 'config');
 
             // Registering package commands.
@@ -29,10 +29,10 @@ class ExchangeRateServiceProvider extends ServiceProvider
     public function register()
     {
         // Automatically apply the package configuration
-        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'currency-exchange-rate');
+        $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'exchange-rate');
 
         // Register the main class to use with the facade
-        $this->app->singleton('currency-exchange-rate', function () {
+        $this->app->singleton('exchange-rate', function () {
             return new ExchangeRate;
         });
     }
