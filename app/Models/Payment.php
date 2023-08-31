@@ -6,6 +6,7 @@ use App\Enums\PaymentTypeEnum;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Payment extends Model
 {
@@ -26,5 +27,10 @@ class Payment extends Model
     public function uniqueIds()
     {
         return ['uuid'];
+    }
+
+    public function order(): HasOne
+    {
+        return $this->hasOne(Order::class, 'payment_uuid');
     }
 }
