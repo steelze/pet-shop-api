@@ -1,13 +1,13 @@
 <?php
 
-namespace Steelze\CurrencyExchangeRate;
+namespace Steelze\ExchangeRate;
 
 use Illuminate\Support\Facades\Facade;
 
 /**
- * @see \Steelze\CurrencyExchangeRate\Skeleton\SkeletonClass
+ * @see \Steelze\ExchangeRate\Skeleton\SkeletonClass
  */
-class CurrencyExchangeRateFacade extends Facade
+class ExchangeRateFacade extends Facade
 {
     /**
      * Get the registered name of the component.
@@ -16,6 +16,6 @@ class CurrencyExchangeRateFacade extends Facade
      */
     protected static function getFacadeAccessor()
     {
-        return 'currency-exchange-rate';
+        return 'exchange-rate';
     }
 }

@@ -1,10 +1,10 @@
 <?php
 
-namespace Steelze\CurrencyExchangeRate;
+namespace Steelze\ExchangeRate;
 
 use Illuminate\Support\ServiceProvider;
 
-class CurrencyExchangeRateServiceProvider extends ServiceProvider
+class ExchangeRateServiceProvider extends ServiceProvider
 {
     /**
      * Bootstrap the application services.
@@ -33,7 +33,7 @@ class CurrencyExchangeRateServiceProvider extends ServiceProvider
 
         // Register the main class to use with the facade
         $this->app->singleton('currency-exchange-rate', function () {
-            return new CurrencyExchangeRate;
+            return new ExchangeRate;
         });
     }
 }
