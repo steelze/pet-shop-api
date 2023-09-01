@@ -2,34 +2,34 @@
 
 namespace App\Services;
 
-use App\Exceptions\JWTError;
-use Carbon\CarbonImmutable;
+use Throwable;
+use Lcobucci\JWT\Token;
+use Lcobucci\JWT\Signer;
+use Lcobucci\JWT\Encoder;
 use Carbon\CarbonInterval;
-use Illuminate\Contracts\Auth\Authenticatable;
-use Illuminate\Http\Request;
+use Carbon\CarbonImmutable;
 use Illuminate\Support\Arr;
 use Illuminate\Support\Str;
-use Lcobucci\JWT\Encoder;
-use Lcobucci\JWT\Encoding\CannotDecodeContent;
-use Lcobucci\JWT\Encoding\ChainedFormatter;
-use Lcobucci\JWT\Encoding\JoseEncoder;
-use Lcobucci\JWT\Signer;
-use Lcobucci\JWT\Signer\Key\InMemory;
-use Lcobucci\JWT\Signer\Rsa\Sha256;
-use Lcobucci\JWT\Token;
-use Lcobucci\JWT\Token\Builder;
-use Lcobucci\JWT\Token\InvalidTokenStructure;
+use App\Exceptions\JWTError;
+use Illuminate\Http\Request;
+use Psr\Clock\ClockInterface;
 use Lcobucci\JWT\Token\Parser;
-use Lcobucci\JWT\Token\UnsupportedHeaderFound;
+use Lcobucci\JWT\Token\Builder;
 use Lcobucci\JWT\UnencryptedToken;
+use Lcobucci\JWT\Signer\Rsa\Sha256;
+use Lcobucci\JWT\Signer\Key\InMemory;
+use Lcobucci\JWT\Encoding\JoseEncoder;
+use Lcobucci\JWT\Validation\Validator;
+use Lcobucci\JWT\Encoding\ChainedFormatter;
+use Lcobucci\JWT\Token\InvalidTokenStructure;
+use Lcobucci\JWT\Token\UnsupportedHeaderFound;
+use Illuminate\Contracts\Auth\Authenticatable;
+use Lcobucci\JWT\Encoding\CannotDecodeContent;
+use Symfony\Component\HttpFoundation\Response;
 use Lcobucci\JWT\Validation\Constraint\IssuedBy;
 use Lcobucci\JWT\Validation\Constraint\SignedWith;
 use Lcobucci\JWT\Validation\Constraint\StrictValidAt;
 use Lcobucci\JWT\Validation\RequiredConstraintsViolated;
-use Lcobucci\JWT\Validation\Validator;
-use Psr\Clock\ClockInterface;
-use Symfony\Component\HttpFoundation\Response;
-use Throwable;
 
 class JWTService
 {

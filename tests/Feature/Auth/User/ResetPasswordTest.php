@@ -27,7 +27,7 @@ class ResetPasswordTest extends TestCase
     public function test_user_cannot_reset_password_with_wrong_email(): void
     {
         $user = User::factory()->user()->create();
-        $token = Password::sendResetLink(['email' => $user->email], fn($record, $token) => $token);
+        $token = Password::sendResetLink(['email' => $user->email], fn ($record, $token) => $token);
         $payload = [
             'email' => fake()->email(),
             'token' => $token,
@@ -43,7 +43,7 @@ class ResetPasswordTest extends TestCase
     public function test_user_cannot_reset_password_with_invalid_token(): void
     {
         $user = User::factory()->user()->create();
-        Password::sendResetLink(['email' => $user->email], fn($record, $token) => $token);
+        Password::sendResetLink(['email' => $user->email], fn ($record, $token) => $token);
         $payload = [
             'email' => $user->email,
             'token' => Str::random(64),
@@ -59,7 +59,7 @@ class ResetPasswordTest extends TestCase
     public function test_user_can_reset_password_successfully(): void
     {
         $user = User::factory()->user()->create();
-        $token = Password::sendResetLink(['email' => $user->email], fn($record, $token) => $token);
+        $token = Password::sendResetLink(['email' => $user->email], fn ($record, $token) => $token);
         $password = Str::random(8);
 
         $payload = [

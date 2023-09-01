@@ -32,7 +32,6 @@ class Payment extends Model
     ];
 
     /**
-     *
      * @return array<string>
      */
     public function uniqueIds(): array

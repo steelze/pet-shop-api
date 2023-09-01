@@ -22,7 +22,7 @@ class JWTMiddleware
 
         $token = $jwt->getTokenFromRequestHeader($request);
 
-        if (!$token)  {
+        if (!$token) {
             throw new UnauthorizedHttpException('jwt-auth', 'Unauthorized');
         }
 

@@ -60,11 +60,17 @@ class ForgotPasswordController extends Controller
     {
         $credentials = array_merge($request->only('email'), ['is_admin' => false]);
 
-        $status = Password::sendResetLink($credentials, fn($user, $token) => $token);
+        $status = Password::sendResetLink($credentials, fn ($user, $token) => $token);
 
-       return match ($status) {
+        return match ($status) {
             Password::INVALID_USER => RespondWith::error(__($status), code: Response::HTTP_NOT_FOUND),
-            Password::RESET_THROTTLED => RespondWith::error(__($status, ['seconds' => config('auth.passwords.users.throttle')]), code: Response::HTTP_UNPROCESSABLE_ENTITY),
+            Password::RESET_THROTTLED => RespondWith::error(
+                __(
+                    $status,
+                    ['seconds' => config('auth.passwords.users.throttle')]
+                ),
+                code: Response::HTTP_UNPROCESSABLE_ENTITY
+            ),
             default => RespondWith::success(['reset_token' => $status]),
         };
     }

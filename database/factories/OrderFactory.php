@@ -32,7 +32,7 @@ class OrderFactory extends Factory
         return [
             'user_uuid' => User::users()->inRandomOrder()->value('uuid'),
             'order_status_uuid' => OrderStatus::inRandomOrder()->value('uuid'),
-            'products' => $products->map(fn($product) => ['product' => $product->uuid, 'quantity' => (int) $product->quantity]),
+            'products' => $products->map(fn ($product) => ['product' => $product->uuid, 'quantity' => (int) $product->quantity]),
             'address' => ['shipping' => fake()->address(), 'billing' => fake()->address()],
             'delivery_fee' => $total < 500 ? 15 : null,
             'amount' => $total,

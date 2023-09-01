@@ -19,7 +19,6 @@ class Brand extends Model
     protected $guarded = ['id'];
 
     /**
-     *
      * @return array<string>
      */
     public function uniqueIds(): array

@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
 
         $this->renderable(function (Throwable $e) {
             // if (request()->expectsJson()) {
-                return $this->renderJsonResponse($e);
+            return $this->renderJsonResponse($e);
             // }
         });
     }
@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
         };
 
         $errors = $e instanceof ValidationException ? $e->errors() : [];
-        $trace = method_exists($e, 'getTrace') && $code == Response::HTTP_INTERNAL_SERVER_ERROR ? $e->getTrace() : [];
+        $trace = method_exists($e, 'getTrace') && $code === Response::HTTP_INTERNAL_SERVER_ERROR ? $e->getTrace() : [];
 
         return app()->isLocal()
             ? RespondWith::error($message, $errors, $code, trace: $trace)

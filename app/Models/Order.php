@@ -25,13 +25,12 @@ class Order extends Model
      * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<string, string>
      */
-    protected $casts =[
+    protected $casts = [
         'products' => 'array',
         'address' => 'array',
     ];
 
     /**
-     *
      * @return array<string>
      */
     public function uniqueIds(): array

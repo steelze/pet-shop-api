@@ -7,7 +7,6 @@ use App\Models\User;
 class UserRepository
 {
     /**
-     *
      * @param array<string, string|int> $payload
      */
     public function create(array $payload): User
@@ -16,7 +15,6 @@ class UserRepository
     }
 
     /**
-     *
      * @param array<string, string|int> $payload
      */
     public function update(User $user, array $payload): User

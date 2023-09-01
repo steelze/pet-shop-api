@@ -23,7 +23,10 @@ class CreateAdminController extends Controller
      *              mediaType="application/x-www-form-urlencoded",
      *              @OA\Schema(
      *                  type="object",
-     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number"},
+     *                  required={
+     *                      "first_name", "last_name", "email", "password",
+     *                      "password_confirmation", "address", "phone_number"
+     *                  },
      *                  properties={
      *                      @OA\Property(
      *                          property="first_name",

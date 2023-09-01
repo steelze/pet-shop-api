@@ -67,8 +67,8 @@ class CategoryController extends Controller
         $sortBy = in_array($request->sortBy, $allowedSortBy) ? $request->sortBy : null;
         $sortByDirection = $request->boolean('desc', false) ? 'desc' : 'asc';
 
-        $categories = Category::when($request->title, fn($sql, $value) => $sql->where('title', 'like', "%{$value}%"))
-            ->when(!empty($sortBy), fn($sql) => $sql->orderBy($sortBy, $sortByDirection))
+        $categories = Category::when($request->title, fn ($sql, $value) => $sql->where('title', 'like', "%{$value}%"))
+            ->when(!empty($sortBy), fn ($sql) => $sql->orderBy($sortBy, $sortByDirection))
             ->paginate($limit);
 
         return RespondWith::raw($categories);

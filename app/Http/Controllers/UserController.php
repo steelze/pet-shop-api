@@ -120,13 +120,13 @@ class UserController extends Controller
         $filterByMarketing = in_array($request->marketing, [1, 0, '1', '0'], true);
 
         $users = User::users()
-            ->when($request->first_name, fn($sql, $value) => $sql->where('first_name', 'like', "%{$value}%"))
-            ->when($request->email, fn($sql, $value) => $sql->where('email', 'like', "%{$value}%"))
-            ->when($request->phone, fn($sql, $value) => $sql->where('phone_number', 'like', "%{$value}%"))
-            ->when($request->address, fn($sql, $value) => $sql->where('address', 'like', "%{$value}%"))
-            ->when($request->created_at, fn($sql, $value) => $sql->where('created_at', 'like', "%{$value}%"))
-            ->when($filterByMarketing, fn($sql) => $sql->where('is_marketing', $request->marketing))
-            ->when(!empty($sortBy), fn($sql) => $sql->orderBy($sortBy, $sortByDirection))
+            ->when($request->first_name, fn ($sql, $value) => $sql->where('first_name', 'like', "%{$value}%"))
+            ->when($request->email, fn ($sql, $value) => $sql->where('email', 'like', "%{$value}%"))
+            ->when($request->phone, fn ($sql, $value) => $sql->where('phone_number', 'like', "%{$value}%"))
+            ->when($request->address, fn ($sql, $value) => $sql->where('address', 'like', "%{$value}%"))
+            ->when($request->created_at, fn ($sql, $value) => $sql->where('created_at', 'like', "%{$value}%"))
+            ->when($filterByMarketing, fn ($sql) => $sql->where('is_marketing', $request->marketing))
+            ->when(!empty($sortBy), fn ($sql) => $sql->orderBy($sortBy, $sortByDirection))
             ->paginate($limit);
 
         return RespondWith::raw($users);
@@ -152,7 +152,10 @@ class UserController extends Controller
      *              mediaType="application/x-www-form-urlencoded",
      *              @OA\Schema(
      *                  type="object",
-     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number"},
+     *                  required={
+     *                      "first_name", "last_name", "email",
+     *                          "password", "password_confirmation", "address", "phone_number"
+     *                  },
      *                  properties={
      *                      @OA\Property(
      *                          property="first_name",

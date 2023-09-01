@@ -2,16 +2,16 @@
 
 namespace Steelze\ExchangeRate;
 
-use Illuminate\Http\Client\RequestException;
-use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Http\Client\RequestException;
 use Steelze\ExchangeRate\DTO\ExchangeResultDTO;
-use Steelze\ExchangeRate\Exceptions\CouldNotFetchExchangeRates;
 use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
+use Steelze\ExchangeRate\Exceptions\CouldNotFetchExchangeRates;
 
 class ExchangeRate
 {
-    CONST EXCHANGE_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
+    const EXCHANGE_RATES_URL = 'https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml';
 
     /**
      * Fetches exchange rates from the European Central Bank.

@@ -2,13 +2,13 @@
 
 namespace Steelze\ExchangeRate\Http\Controllers;
 
-use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Validator;
-use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
+use Illuminate\Http\JsonResponse;
 use Steelze\ExchangeRate\ExchangeRate;
+use Illuminate\Support\Facades\Validator;
 use Steelze\ExchangeRate\Helpers\RespondWith;
 use Symfony\Component\HttpFoundation\Response;
+use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
 
 /**
  * Class ExchangeRateController
@@ -34,7 +34,10 @@ class ExchangeRateController
         try {
             $result = $exchangeRate->convertToCurrency($request->amount, $request->currency);
         } catch (InvalidTargetCurrency $th) {
-            return RespondWith::error('Failed to convert: '.$th->getMessage(), code: Response::HTTP_UNPROCESSABLE_ENTITY);
+            return RespondWith::error(
+                'Failed to convert: '.$th->getMessage(),
+                code: Response::HTTP_UNPROCESSABLE_ENTITY
+            );
         } catch (\Throwable $th) {
             return RespondWith::error('Failed to convert', code: Response::HTTP_UNPROCESSABLE_ENTITY);
         }

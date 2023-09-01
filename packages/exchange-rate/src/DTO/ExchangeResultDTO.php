@@ -7,16 +7,15 @@ readonly class ExchangeResultDTO
     protected string $fromCurrency;
 
     public function __construct(
-        public readonly float $amount,
-        public readonly string $toCurrency,
-        public readonly float $exchangeRate,
-        public readonly float $convertedAmount
+        public float $amount,
+        public string $toCurrency,
+        public float $exchangeRate,
+        public float $convertedAmount
     ) {
         $this->fromCurrency = 'EUR';
     }
 
     /**
-     *
      * @return array<string, string|float>
      */
     public function toArray(): array

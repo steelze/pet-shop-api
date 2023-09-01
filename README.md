@@ -103,6 +103,7 @@ These instructions will get you a copy of the project up and running on your loc
   If correctly setup, all tests should pass
 
   ![Alt text](/public/tests.png "Test cases")
+  ![Alt text](/public/insights.png "PHP insight")
   
 ### Packages ✍🏾
 - Exchange Rate - https://github.com/steelze/pet-shop-api/tree/main/packages/exchange-rate

@@ -23,7 +23,10 @@ class CreateUserController extends Controller
      *              mediaType="application/x-www-form-urlencoded",
      *              @OA\Schema(
      *                  type="object",
-     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number"},
+     *                  required={
+     *                      "first_name", "last_name", "email", "password",
+     *                      "password_confirmation", "address", "phone_number"
+     *                  },
      *                  properties={
      *                      @OA\Property(
      *                          property="first_name",
@@ -98,7 +101,10 @@ class CreateUserController extends Controller
      */
     public function __invoke(CreateUserRequest $request, JWTService $service, UserRepository $repository): JsonResponse
     {
-        $payload = array_merge($request->validated(), ['is_admin' => false, 'is_marketing' => $request->boolean('is_marketing')]);
+        $payload = array_merge(
+            $request->validated(),
+            ['is_admin' => false, 'is_marketing' => $request->boolean('is_marketing')]
+        );
 
         $user = $repository->create($payload);
 

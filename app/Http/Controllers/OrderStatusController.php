@@ -7,7 +7,6 @@ use App\Http\Requests\OrderStatusRequest;
 use App\Models\OrderStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Str;
 
 class OrderStatusController extends Controller
 {
@@ -67,8 +66,11 @@ class OrderStatusController extends Controller
         $sortBy = in_array($request->sortBy, $allowedSortBy) ? $request->sortBy : null;
         $sortByDirection = $request->boolean('desc', false) ? 'desc' : 'asc';
 
-        $categories = OrderStatus::when($request->title, fn($sql, $value) => $sql->where('title', 'like', "%{$value}%"))
-            ->when(!empty($sortBy), fn($sql) => $sql->orderBy($sortBy, $sortByDirection))
+        $categories = OrderStatus::when(
+                $request->title,
+                fn ($sql, $value) => $sql->where('title', 'like', "%{$value}%")
+            )
+            ->when(!empty($sortBy), fn ($sql) => $sql->orderBy($sortBy, $sortByDirection))
             ->paginate($limit);
 
         return RespondWith::raw($categories);

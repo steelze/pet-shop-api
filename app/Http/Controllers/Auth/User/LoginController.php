@@ -70,6 +70,6 @@ class LoginController extends Controller
             return RespondWith::error('Failed to authenticate user', code: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
-        return RespondWith::success(['token'=> $token->toString()]);
+        return RespondWith::success(['token' => $token->toString()]);
     }
 }
