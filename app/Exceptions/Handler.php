@@ -36,9 +36,9 @@ class Handler extends ExceptionHandler
         });
 
         $this->renderable(function (Throwable $e) {
-            if (request()->expectsJson()) {
+            // if (request()->expectsJson()) {
                 return $this->renderJsonResponse($e);
-            }
+            // }
         });
     }
 
@@ -58,7 +58,7 @@ class Handler extends ExceptionHandler
         };
 
         $errors = $e instanceof ValidationException ? $e->errors() : [];
-        $trace = method_exists($e, 'getTrace') ? $e->getTrace() : [];
+        $trace = !method_exists($e, 'getTrace') ? $e->getTrace() : [];
 
         return app()->isLocal()
             ? RespondWith::error($message, $errors, $code, trace: $trace)
