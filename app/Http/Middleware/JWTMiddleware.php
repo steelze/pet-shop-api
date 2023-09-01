@@ -2,7 +2,7 @@
 
 namespace App\Http\Middleware;
 
-use App\Exceptions\JWTException;
+use App\Exceptions\JWTError;
 use App\Services\JWTService;
 use Closure;
 use Illuminate\Http\Request;
@@ -28,7 +28,7 @@ class JWTMiddleware
 
         try {
             $jwt->parseToken($token);
-        } catch (JWTException $e) {
+        } catch (JWTError $e) {
             throw new UnauthorizedHttpException('jwt-auth', 'Unauthorized', $e->getPrevious(), $e->getCode());
         }
 

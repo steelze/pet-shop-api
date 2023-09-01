@@ -5,7 +5,7 @@ namespace App\Exceptions;
 use Exception;
 use Symfony\Component\HttpFoundation\Response;
 
-class JWTException extends Exception
+class JWTError extends Exception
 {
     public function getStatusCode(): int
     {

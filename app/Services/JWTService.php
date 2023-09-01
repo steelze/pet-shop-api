@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Exceptions\JWTException;
+use App\Exceptions\JWTError;
 use Carbon\CarbonImmutable;
 use Carbon\CarbonInterval;
 use Illuminate\Contracts\Auth\Authenticatable;
@@ -80,7 +80,7 @@ class JWTService
      *
      * @return array<string, string|int> The parsed and validated claims.
      *
-     * @throws JWTException If the token parsing or validation fails.
+     * @throws JWTError If the token parsing or validation fails.
      */
     public function parseToken(string $token): array
     {
@@ -168,7 +168,7 @@ class JWTService
      *
      * @return UnencryptedToken The parsed JWT token.
      *
-     * @throws JWTException If the token parsing fails.
+     * @throws JWTError If the token parsing fails.
      */
     protected function parse(string $token): UnencryptedToken
     {
@@ -177,9 +177,9 @@ class JWTService
         try {
             $parsedToken = $parser->parse($token);
         } catch (CannotDecodeContent | InvalidTokenStructure | UnsupportedHeaderFound $e) {
-            throw new JWTException('Malformed Token', Response::HTTP_UNAUTHORIZED, $e);
+            throw new JWTError('Malformed Token', Response::HTTP_UNAUTHORIZED, $e);
         } catch (Throwable $e) {
-            throw new JWTException('Error parsing token', Response::HTTP_UNAUTHORIZED, $e);
+            throw new JWTError('Error parsing token', Response::HTTP_UNAUTHORIZED, $e);
         }
 
         return $parsedToken;
@@ -188,7 +188,7 @@ class JWTService
     /**
      * Check the token against validation constraints.
      *
-     * @throws JWTException If the token validation fails.
+     * @throws JWTError If the token validation fails.
      */
     protected function checkConstraints(Token $token): void
     {
@@ -204,9 +204,9 @@ class JWTService
             $validator->assert($token, ...$constraints);
         } catch (RequiredConstraintsViolated $e) {
             $violation = Arr::first($e->violations());
-            throw new JWTException($violation->getMessage(), $violation->getCode(), $violation);
+            throw new JWTError($violation->getMessage(), $violation->getCode(), $violation);
         } catch (Throwable $e) {
-            throw new JWTException('Error validating token', Response::HTTP_UNAUTHORIZED, $e);
+            throw new JWTError('Error validating token', Response::HTTP_UNAUTHORIZED, $e);
         }
     }
 
