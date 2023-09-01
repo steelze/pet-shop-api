@@ -22,7 +22,7 @@ class RespondWith
 
     /**
      * @param array<string, array<string>> $errors
-     * @param array<object> $trace
+     * @param array<int, array<array|int|object|string>> $trace
      */
     public static function error(
         string $error,
@@ -36,7 +36,7 @@ class RespondWith
     /**
      * @param array<string, array<string>> $errors
      * @param array<int|string, int|string|bool|array|object> $extra
-     * @param array<object> $trace
+     * @param array<int, array<array|int|object|string>> $trace
      */
     protected static function respond(
         bool $success,
