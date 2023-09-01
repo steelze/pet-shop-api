@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Validator;
 use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
 use Steelze\ExchangeRate\ExchangeRate;
 use Steelze\ExchangeRate\Helpers\RespondWith;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class ExchangeRateController
@@ -27,15 +28,15 @@ class ExchangeRateController
         ]);
 
         if ($validator->fails()) {
-            return RespondWith::error('Failed to convert');
+            return RespondWith::error('Failed to convert', code: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         try {
             $result = $exchangeRate->convertToCurrency($request->amount, $request->currency);
         } catch (InvalidTargetCurrency $th) {
-            return RespondWith::error('Failed to convert: '.$th->getMessage());
+            return RespondWith::error('Failed to convert: '.$th->getMessage(), code: Response::HTTP_UNPROCESSABLE_ENTITY);
         } catch (\Throwable $th) {
-            return RespondWith::error('Failed to convert');
+            return RespondWith::error('Failed to convert', code: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 
         return RespondWith::success($result->toArray());
