@@ -21,8 +21,8 @@ class CreateAdminController extends Controller
 
         $token = $service->fromUser($user);
 
-        $user->token = $token->toString();
+        $data = array_merge($user->toArray(), ['token' => $token->toString()]);
 
-        return RespondWith::success($user->toArray());
+        return RespondWith::success($data);
     }
 }

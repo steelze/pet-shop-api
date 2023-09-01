@@ -21,6 +21,8 @@ class CreateUserController extends Controller
 
         $user->token = $token->toString();
 
-        return RespondWith::success($user->toArray());
+        $data = array_merge($user->toArray(), ['token' => $token->toString()]);
+
+        return RespondWith::success($data);
     }
 }
