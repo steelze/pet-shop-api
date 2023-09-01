@@ -96,7 +96,7 @@ These instructions will get you a copy of the project up and running on your loc
   ![Alt text](/public/tests.png "Test cases")
   
 ### Packages ✍🏾
-- Exchange Rate - https://github.com/steelze/pet-shop-api.git
+- Exchange Rate - https://github.com/steelze/pet-shop-api/tree/main/packages/exchange-rate
   
 ### Author ✍🏾
 Odunayo Ileri Ogungbure

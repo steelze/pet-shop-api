@@ -1,10 +1,7 @@
-# Very short description of the package
+# Exchange Rate Converter
 
-[![Latest Version on Packagist](https://img.shields.io/packagist/v/steelze/currency-exchange-rate.svg?style=flat-square)](https://packagist.org/packages/steelze/currency-exchange-rate)
-[![Total Downloads](https://img.shields.io/packagist/dt/steelze/currency-exchange-rate.svg?style=flat-square)](https://packagist.org/packages/steelze/currency-exchange-rate)
-![GitHub Actions](https://github.com/steelze/currency-exchange-rate/actions/workflows/main.yml/badge.svg)
-
-This is where your description should go. Try and limit it to a paragraph or two, and maybe throw in a mention of what PSRs you support to avoid any confusion with users and contributors.
+### Introduction
+A collection REST API endpoints for FE team to build the UI of the Pet Shop App
 
 ## Installation
 
@@ -16,9 +13,28 @@ composer require steelze/currency-exchange-rate
 
 ## Usage
 
+Make a `GET` request to `exchange-rate` with `amount` and `currency` as query parameters
+
 ```php
-// Usage description here
+exchange-rate?amount=100&currency=USD
+
+// Response
+{
+  "success": 1,
+  "data": {
+    "amount": 100,
+    "from_currency": "EUR",
+    "to_currency": "USD",
+    "exchange_rate": 1.2345,
+    "converted_amount": 123.45
+  },
+  "error": null,
+  "errors": [],
+  "extra": [],
+  "trace": []
+}
 ```
+
 
 ### Testing
 
@@ -41,12 +57,9 @@ If you discover any security related issues, please email sogungbure@gmail.com i
 ## Credits
 
 -   [Odunayo Ogungbure](https://github.com/steelze)
--   [All Contributors](../../contributors)
 
-## License
+### Author
+Odunayo Ileri Ogungbure
 
-The MIT License (MIT). Please see [License File](LICENSE.md) for more information.
-
-## Laravel Package Boilerplate
-
-This package was generated using the [Laravel Package Boilerplate](https://laravelpackageboilerplate.com).
+### License 
+MIT
