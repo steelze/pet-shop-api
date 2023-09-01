@@ -18,7 +18,7 @@ class JWTMiddleware
      */
     public function handle(Request $request, Closure $next): Response
     {
-        $jwt = new JWTService;
+        $jwt = new JWTService();
 
         $token = $jwt->getTokenFromRequestHeader($request);
 

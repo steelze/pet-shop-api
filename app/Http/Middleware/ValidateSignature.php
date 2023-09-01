@@ -9,6 +9,7 @@ class ValidateSignature extends Middleware
     /**
      * The names of the query string parameters that should be ignored.
      *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<int, string>
      */
     protected $except = [

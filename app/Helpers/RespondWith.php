@@ -7,26 +7,22 @@ use Symfony\Component\HttpFoundation\Response;
 
 class RespondWith
 {
-    /**
-     * @param mixed $data
-     */
     public static function raw(mixed $data, int $code = Response::HTTP_OK): JsonResponse
     {
         return response()->json($data, $code);
     }
 
     /**
-     * @param array<mixed, mixed> $data
-     * @param array<mixed, mixed> $extra
+     * @param array<int|string, int|string|bool|array|object> $extra
      */
-    public static function success(array $data = [], int $code = Response::HTTP_OK, array $extra = []): JsonResponse
+    public static function success(mixed $data = [], int $code = Response::HTTP_OK, array $extra = []): JsonResponse
     {
         return self::respond(true, $code, $data, extra: $extra);
     }
 
     /**
-     * @param array<mixed, mixed> $errors
-     * @param array<mixed, mixed> $trace
+     * @param array<string, array<string>> $errors
+     * @param array<object> $trace
      */
     public static function error(
         string $error,
@@ -38,15 +34,14 @@ class RespondWith
     }
 
     /**
-     * @param array<mixed, mixed> $data
-     * @param array<mixed, mixed> $errors
-     * @param array<mixed, mixed> $extra
-     * @param array<mixed, mixed> $trace
+     * @param array<string, array<string>> $errors
+     * @param array<int|string, int|string|bool|array|object> $extra
+     * @param array<object> $trace
      */
     protected static function respond(
         bool $success,
         int $code,
-        array $data = [],
+        mixed $data = [],
         ?string $error = null,
         array $errors = [],
         array $extra = [],

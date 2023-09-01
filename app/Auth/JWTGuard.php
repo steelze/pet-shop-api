@@ -22,16 +22,18 @@ class JWTGuard implements Guard
 
     /**
      * Get the currently authenticated user.
-     *
-     * @return \Illuminate\Contracts\Auth\Authenticatable|null
      */
     public function user(): ?Authenticatable
     {
-        if (!is_null($this->user)) return $this->user;
+        if (!is_null($this->user)) {
+            return $this->user;
+        }
 
         $token = $this->jwt->getTokenFromRequestHeader($this->request);
 
-        if (!$token) return null;
+        if (!$token) {
+            return null;
+        }
 
         try {
             $payload = $this->jwt->parseToken($token);
@@ -44,8 +46,7 @@ class JWTGuard implements Guard
     /**
      * Validate a user's credentials.
      *
-     * @param  array $credentials
-     * @return bool
+     * @param array<string, string|int|bool> $credentials
      */
     public function validate(array $credentials = []): bool
     {
@@ -55,11 +56,9 @@ class JWTGuard implements Guard
     /**
      * Attempt to authenticate the user using the given credentials and return the token.
      *
-     * @param  array $credentials
-     * @param  bool $login
-     * @return bool UnencryptedToken
+     * @param array<string, string|int|bool> $credentials
      */
-    public function attempt(array $credentials = [], $login = true): bool|UnencryptedToken
+    public function attempt(array $credentials = [], bool $login = true): bool|UnencryptedToken
     {
         $user = $this->provider->retrieveByCredentials($credentials);
 
@@ -72,9 +71,6 @@ class JWTGuard implements Guard
 
     /**
      * Create a token for a user.
-     *
-     * @param  Authenticatable  $user
-     * @return UnencryptedToken
      */
     public function login(Authenticatable $user): UnencryptedToken
     {
@@ -86,20 +82,16 @@ class JWTGuard implements Guard
 
     /**
      * Logout the user, thus invalidating the token.
-     *
-     * @return void
      */
-    public function logout()
+    public function logout(): void
     {
         $this->invalidate();
     }
 
     /**
      * Invalidate the token.
-     *
-     * @return void
      */
-    public function invalidate()
+    public function invalidate(): void
     {
         // TODO: Add implementation to invalidate the token.
         // $this->jwt->invalidateToken();
@@ -108,11 +100,9 @@ class JWTGuard implements Guard
     /**
      * Determine if the user matches the credentials.
      *
-     * @param  Authenticatable  $user
-     * @param  array  $credentials
-     * @return bool
+     * @param array<string, string|int|bool> $credentials
      */
-    protected function hasValidCredentials(?Authenticatable $user, $credentials): bool
+    protected function hasValidCredentials(?Authenticatable $user, array $credentials): bool
     {
         return !is_null($user) && $this->provider->validateCredentials($user, $credentials);
     }

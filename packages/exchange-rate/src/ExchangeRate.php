@@ -6,8 +6,8 @@ use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Http;
 use SimpleXMLElement;
 use Steelze\ExchangeRate\DTO\ExchangeResultDTO;
-use Steelze\ExchangeRate\Exceptions\ExchangeRateFetchException;
-use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrencyException;
+use Steelze\ExchangeRate\Exceptions\CouldNotFetchExchangeRates;
+use Steelze\ExchangeRate\Exceptions\InvalidTargetCurrency;
 
 class ExchangeRate
 {
@@ -16,8 +16,8 @@ class ExchangeRate
     /**
      * Fetches exchange rates from the European Central Bank.
      *
-     * @return array
-     * @throws ExchangeRateFetchException
+     * @return array<float, string>
+     * @throws CouldNotFetchExchangeRates
      */
     public function fetchExchangeRates(): array
     {
@@ -36,27 +36,24 @@ class ExchangeRate
 
             return $exchangeRates;
         } catch (RequestException $e) {
-            throw new ExchangeRateFetchException('Error fetching exchange rates', $e->getCode(), $e);
+            throw new CouldNotFetchExchangeRates('Error fetching exchange rates', $e->getCode(), $e);
         } catch (\Exception $e) {
-            throw new ExchangeRateFetchException('An error occurred while fetching exchange rates', $e->getCode(), $e);
+            throw new CouldNotFetchExchangeRates('An error occurred while fetching exchange rates', $e->getCode(), $e);
         }
     }
 
     /**
      * Converts the given amount to the specified currency.
      *
-     * @param float $amount
-     * @param string $currency
-     * @return ExchangeResultDTO
-     * @throws InvalidTargetCurrencyException
-     * @throws ExchangeRateFetchException
+     * @throws InvalidTargetCurrency
+     * @throws CouldNotFetchExchangeRates
      */
     public function convertToCurrency(float $amount, string $currency): ExchangeResultDTO
     {
         $exchangeRates = $this->fetchExchangeRates();
 
         if (!isset($exchangeRates[$currency])) {
-            throw new InvalidTargetCurrencyException();
+            throw new InvalidTargetCurrency();
         }
 
         $rate = $exchangeRates[$currency];

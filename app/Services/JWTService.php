@@ -57,7 +57,7 @@ class JWTService
      * Generate a JWT token with the specified claims.
      *
      * @param string $subject The subject to include in the token.
-     * @param array $claims The claims to include in the token.
+     * @param array<striing, string|int> $claims The claims to include in the token.
      *
      * @return UnencryptedToken The generated JWT token.
      */
@@ -78,9 +78,7 @@ class JWTService
     /**
      * Parse and validate a JWT token, returning its claims.
      *
-     * @param string $token The JWT token to parse and validate.
-     *
-     * @return array The parsed and validated claims.
+     * @return array<string, string|int> The parsed and validated claims.
      *
      * @throws JWTException If the token parsing or validation fails.
      */
@@ -104,13 +102,13 @@ class JWTService
         $header = $request->header('Authorization', '');
         $position = strrpos($header, 'Bearer ');
 
-        if ($position === false) return null;
+        if ($position === false) {
+            return null;
+        }
 
         $header = substr($header, $position + 7);
 
-        $token = str_contains($header, ',') ? strstr($header, ',', true) : $header;
-
-        return $token;
+        return str_contains($header, ',') ? strstr($header, ',', true) : $header;
     }
 
     /**
@@ -123,9 +121,8 @@ class JWTService
     public function fromUser(Authenticatable $user): UnencryptedToken
     {
         $claims = [$user->getAuthIdentifierName() => $user->getAuthIdentifier()];
-        $token = $this->generateToken($user->id, $claims);
 
-        return $token;
+        return $this->generateToken($user->id, $claims);
     }
 
     /**
@@ -190,10 +187,6 @@ class JWTService
 
     /**
      * Check the token against validation constraints.
-     *
-     * @param Token $token The parsed JWT token to be validated.
-     *
-     * @return void
      *
      * @throws JWTException If the token validation fails.
      */

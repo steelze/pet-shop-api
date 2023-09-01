@@ -8,8 +8,7 @@ use Symfony\Component\HttpFoundation\Response;
 class RespondWith
 {
     /**
-     * @param array<mixed, mixed> $data
-     * @param array<mixed, mixed> $extra
+     * @param array<int|string, int|string|bool|array|object> $extra
      */
     public static function success(mixed $data = [], int $code = Response::HTTP_OK, array $extra = []): JsonResponse
     {
@@ -17,8 +16,8 @@ class RespondWith
     }
 
     /**
-     * @param array<mixed, mixed> $errors
-     * @param array<mixed, mixed> $trace
+     * @param array<string, array<string>> $errors
+     * @param array<object> $trace
      */
     public static function error(
         string $error,
@@ -30,10 +29,9 @@ class RespondWith
     }
 
     /**
-     * @param array<mixed, mixed> $data
-     * @param array<mixed, mixed> $errors
-     * @param array<mixed, mixed> $extra
-     * @param array<mixed, mixed> $trace
+     * @param array<string, array<string>> $errors
+     * @param array<int|string, int|string|bool|array|object> $extra
+     * @param array<object> $trace
      */
     protected static function respond(
         bool $success,

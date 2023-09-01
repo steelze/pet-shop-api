@@ -11,6 +11,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\UserController;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -25,16 +26,12 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
-
-Route::prefix('v1')->group(function() {
+Route::prefix('v1')->group(function(): void {
     Route::middleware('jwt.auth')
-        ->get('user', fn (Request $request) => RespondWith::success($request->user()->toArray()));
+        ->get('user', fn (Request $request): JsonResponse => RespondWith::success($request->user()->toArray()));
 
     // User Routes
-    Route::prefix('user')->group(function() {
+    Route::prefix('user')->group(function(): void {
         // Authentication Routes
         Route::post('create', CreateUserController::class);
         Route::post('login', LoginController::class);
@@ -42,19 +39,19 @@ Route::prefix('v1')->group(function() {
         Route::post('reset-password-token', ResetPasswordController::class);
 
         // Protected Routes
-        Route::middleware('jwt.auth', 'can:user')->group(function() {
+        Route::middleware('jwt.auth', 'can:user')->group(function(): void {
             Route::put('edit', [ProfileController::class, 'edit']);
         });
     });
 
     // Admin Routes
-    Route::prefix('admin')->group(function() {
+    Route::prefix('admin')->group(function(): void {
         // Authentication Routes
         Route::post('create', CreateAdminController::class);
         Route::post('login', AdminLoginController::class);
 
         // Protected Routes
-        Route::middleware('jwt.auth', 'can:admin')->group(function() {
+        Route::middleware('jwt.auth', 'can:admin')->group(function():void {
             Route::get('user-listing', [UserController::class, 'listing']);
             Route::put('user-edit/{uuid}', [UserController::class, 'edit']);
             Route::delete('user-delete/{uuid}', [UserController::class, 'delete']);
@@ -62,14 +59,14 @@ Route::prefix('v1')->group(function() {
 
     });
 
-    Route::middleware('jwt.auth')->group(function() {
-        Route::controller(CategoryController::class)->prefix('category')->group(function() {
+    Route::middleware('jwt.auth')->group(function(): void {
+        Route::controller(CategoryController::class)->prefix('category')->group(function():void {
             Route::post('create', 'create');
             Route::put('{uuid}', 'update');
             Route::delete('{uuid}', 'delete');
         });
 
-        Route::controller(BrandController::class)->prefix('brand')->group(function() {
+        Route::controller(BrandController::class)->prefix('brand')->group(function(): void {
             Route::post('create', 'create');
             Route::put('{uuid}', 'update');
             Route::delete('{uuid}', 'delete');
@@ -77,12 +74,12 @@ Route::prefix('v1')->group(function() {
     });
 
     // Unprotected Routes
-    Route::controller(CategoryController::class)->group(function() {
+    Route::controller(CategoryController::class)->group(function(): void {
         Route::get('category/{uuid}', 'findOne');
         Route::get('categories', 'listAll');
     });
 
-    Route::controller(BrandController::class)->group(function() {
+    Route::controller(BrandController::class)->group(function(): void {
         Route::get('brand/{uuid}', 'findOne');
         Route::get('brands', 'listAll');
     });

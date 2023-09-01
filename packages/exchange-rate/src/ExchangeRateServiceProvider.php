@@ -9,7 +9,7 @@ class ExchangeRateServiceProvider extends ServiceProvider
     /**
      * Bootstrap the application services.
      */
-    public function boot()
+    public function boot(): void
     {
         $this->loadRoutesFrom(__DIR__.'/routes.php');
 
@@ -26,14 +26,14 @@ class ExchangeRateServiceProvider extends ServiceProvider
     /**
      * Register the application services.
      */
-    public function register()
+    public function register(): void
     {
         // Automatically apply the package configuration
         $this->mergeConfigFrom(__DIR__.'/../config/config.php', 'exchange-rate');
 
         // Register the main class to use with the facade
         $this->app->singleton('exchange-rate', function () {
-            return new ExchangeRate;
+            return new ExchangeRate();
         });
     }
 }

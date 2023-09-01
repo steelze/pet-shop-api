@@ -20,7 +20,7 @@ class ResetPasswordController extends Controller
         // database. Otherwise we will parse the error and return the response.
         $credentials = array_merge($request->only('email', 'password', 'token'), ['is_admin' => false]);
 
-        $status = Password::reset($credentials, function ($user) use ($request) {
+        $status = Password::reset($credentials, function ($user) use ($request): void {
             $user->forceFill(['password' => Hash::make($request->password)])->save();
 
             event(new PasswordReset($user));

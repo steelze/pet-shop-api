@@ -24,7 +24,7 @@ class EditProfileRequest extends FormRequest
      */
     public function rules(): array
     {
-        $user = ($this->uuid)
+        $user = $this->uuid
             ? User::where('uuid', $this->uuid)->firstOrFail()
             : Auth::user();
 

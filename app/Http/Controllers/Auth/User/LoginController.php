@@ -14,7 +14,9 @@ class LoginController extends Controller
     {
         $credentials = array_merge($request->only(['email', 'password']), ['is_admin' => false]);
 
-        if (!$token = auth()->attempt($credentials)) {
+        $token = auth()->attempt($credentials);
+
+        if (!$token) {
             return RespondWith::error('Failed to authenticate user', code: Response::HTTP_UNPROCESSABLE_ENTITY);
         }
 

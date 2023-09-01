@@ -15,6 +15,10 @@ readonly class ExchangeResultDTO
         $this->fromCurrency = 'EUR';
     }
 
+    /**
+     *
+     * @return array<string, string|float>
+     */
     public function toArray(): array
     {
         return [

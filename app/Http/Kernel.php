@@ -11,6 +11,7 @@ class Kernel extends HttpKernel
      *
      * These middleware are run during every request to your application.
      *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<int, class-string|string>
      */
     protected $middleware = [
@@ -26,6 +27,7 @@ class Kernel extends HttpKernel
     /**
      * The application's route middleware groups.
      *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<string, array<int, class-string|string>>
      */
     protected $middlewareGroups = [
@@ -50,6 +52,7 @@ class Kernel extends HttpKernel
      *
      * Aliases may be used instead of class names to conveniently assign middleware to routes and groups.
      *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<string, class-string|string>
      */
     protected $middlewareAliases = [

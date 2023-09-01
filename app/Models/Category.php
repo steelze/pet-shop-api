@@ -11,9 +11,19 @@ class Category extends Model
 {
     use HasFactory, HasUuids;
 
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var array<string>
+     */
     protected $guarded = ['id'];
 
-    public function uniqueIds()
+    /**
+     *
+     * @return array<string>
+     */
+    public function uniqueIds(): array
     {
         return ['uuid'];
     }

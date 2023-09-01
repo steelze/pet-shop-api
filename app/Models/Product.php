@@ -12,18 +12,29 @@ class Product extends Model
 {
     use HasFactory, HasUuids, SoftDeletes;
 
+    /**
+     * The attributes that are not mass assignable.
+     *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var array<string>
+     */
     protected $guarded = ['id'];
 
     /**
      * The attributes that should be cast.
      *
-     * @var array
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var array<string, string>
      */
     protected $casts = [
         'metadata' => 'array',
     ];
 
-    public function uniqueIds()
+    /**
+     *
+     * @return array<string>
+     */
+    public function uniqueIds(): array
     {
         return ['uuid'];
     }

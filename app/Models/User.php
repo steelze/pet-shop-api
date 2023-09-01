@@ -16,16 +16,18 @@ class User extends Authenticatable
     use HasFactory, Notifiable, HasUuids;
 
     /**
-     * The attributes that are mass assignable.
+     * The attributes that are not mass assignable.
      *
-     * @var array<int, string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var array<string>
      */
     protected $guarded = ['id', 'is_admin'];
 
     /**
      * The attributes that should be hidden for serialization.
      *
-     * @var array<int, string>
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
+     * @var array<string>
      */
     protected $hidden = [
         'password',
@@ -35,6 +37,7 @@ class User extends Authenticatable
     /**
      * The attributes that should be cast.
      *
+     * @phpcsSuppress SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingNativeTypeHint
      * @var array<string, string>
      */
     protected $casts = [
@@ -42,12 +45,16 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function uniqueIds()
+    /**
+     *
+     * @return array<string>
+     */
+    public function uniqueIds(): array
     {
         return ['uuid'];
     }
 
-    public function getAuthIdentifierName()
+    public function getAuthIdentifierName(): string
     {
         return 'uuid';
     }
