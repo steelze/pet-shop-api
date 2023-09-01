@@ -37,6 +37,27 @@ A collection REST API endpoints for FE team to build the UI of the Pet Shop App
 Method | Route | Description
 --- | --- | ---
 `GET` | `/api/products` | Fetch all products
+`POST` | `api/v1/admin/create` |
+`POST` | `api/v1/admin/login` |
+`GET` | `api/v1/admin/user-listing` |
+`PUT` | `api/v1/admin/user-edit/{uuid}` |
+`DELETE` | `api/v1/admin/user-delete/{uuid}` |
+`GET` | `api/v1/user` |
+`POST` | `api/v1/user/create` |
+`POST` | `api/v1/user/forgot-password` |
+`POST` | `api/v1/user/login` |
+`POST` | `api/v1/user/reset-password-token` |
+`PUT` | `api/v1/user/edit` |
+`GET`  | `api/v1/brands` |
+`POST` | `api/v1/brand/create` |
+`PUT` | `api/v1/brand/{uuid}` |
+`DELETE` | `api/v1/brand/{uuid}` |
+`GET` | `api/v1/brand/{uuid}` |
+`GET` | `api/v1/categories` |
+`POST` | `api/v1/category/create` |
+`PUT` | `api/v1/category/{uuid}` |
+`DELETE` | `api/v1/category/{uuid}` |
+`GET` | `api/v1/category/{uuid}` |
 
 ### Setup 👨🏾‍💻
 These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
