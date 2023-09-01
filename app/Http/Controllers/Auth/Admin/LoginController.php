@@ -10,6 +10,56 @@ use Symfony\Component\HttpFoundation\Response;
 
 class LoginController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/api/v1/admin/login",
+     *      operationId="adminLogin",
+     *      tags={"Admin"},
+     *      summary="Login an Admin account",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"email", "password"},
+     *                  properties={
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string",
+     *                          description="User email",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string",
+     *                          description="User password",
+     *                      ),
+     *                  },
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Page not found",
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Entity",
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *      ),
+     *  )
+     */
     public function __invoke(LoginRequest $request): JsonResponse
     {
         $credentials = array_merge($request->only(['email', 'password']), ['is_admin' => true]);

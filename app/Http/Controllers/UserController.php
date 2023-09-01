@@ -12,26 +12,102 @@ use Symfony\Component\HttpFoundation\Response;
 
 class UserController extends Controller
 {
-    public function delete(string $uuid, UserRepository $repository): JsonResponse
-    {
-        $user = User::where('uuid', $uuid)->firstOrFail();
-        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
-        $repository->delete($user);
-
-        return RespondWith::success();
-    }
-
-    public function edit(EditProfileRequest $request, string $uuid, UserRepository $repository): JsonResponse
-    {
-        $user = User::where('uuid', $uuid)->firstOrFail();
-        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
-
-        $payload = array_merge($request->validated(), ['is_marketing' => $request->boolean('is_marketing')]);
-        $user = $repository->update($user, $payload);
-
-        return RespondWith::success($user->toArray());
-    }
-
+    /**
+     * @OA\Get(
+     *      path="/api/v1/admin/user-listing",
+     *      operationId="listAllUsers",
+     *      tags={"Admin"},
+     *      summary="List all users",
+     *      @OA\Parameter(
+     *         name="page",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="limit",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="integer",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="sortBy",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="desc",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="boolean",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="fist_name",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="phone",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="address",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="created_at",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="sring",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Parameter(
+     *         name="marketing",
+     *         in="query",
+     *         @OA\Schema(
+     *             type="boolean",
+     *         ),
+     *         style="form"
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *       ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *      ),
+     *   )
+     */
     public function listing(Request $request): JsonResponse
     {
         $limit = $request->limit ?? 20;
@@ -53,5 +129,150 @@ class UserController extends Controller
             ->paginate($limit);
 
         return RespondWith::raw($users);
+    }
+
+    /**
+     * @OA\Put(
+     *      path="/api/v1/admin/user-edit/{uuid}",
+     *      operationId="updateUserAccount",
+     *      tags={"Admin"},
+     *      summary="Edit a User account",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         style="form",
+     *         required=true
+     *      ),
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"first_name", "last_name", "email", "password", "password_confirmation", "address", "phone_number"},
+     *                  properties={
+     *                      @OA\Property(
+     *                          property="first_name",
+     *                          description="User firstname",
+     *                          type="string",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="last_name",
+     *                          description="User lastname",
+     *                          type="string",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string",
+     *                          description="User email",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string",
+     *                          description="User password",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password_confirmation",
+     *                          type="string",
+     *                          description="User password",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="avatar",
+     *                          type="string",
+     *                          description="Avatar image UUID",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="address",
+     *                          type="string",
+     *                          description="User main address",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="phone_number",
+     *                          type="string",
+     *                          description="User main phone number",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="is_marketing",
+     *                          type="string",
+     *                          description="User marketing preferences",
+     *                      ),
+     *                  },
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Page not found",
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Entity",
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *      ),
+     *  )
+     */
+    public function edit(EditProfileRequest $request, string $uuid, UserRepository $repository): JsonResponse
+    {
+        $user = User::where('uuid', $uuid)->firstOrFail();
+        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
+
+        $payload = array_merge($request->validated(), ['is_marketing' => $request->boolean('is_marketing')]);
+        $user = $repository->update($user, $payload);
+
+        return RespondWith::success($user->toArray());
+    }
+
+    /**
+     * @OA\Delete(
+     *      path="/api/v1/admin/user-delete/{uuid}",
+     *      operationId="deleteeUserAccount",
+     *      tags={"Admin"},
+     *      summary="Delete a User account",
+     *      security={{"bearerAuth": {}}},
+     *      @OA\Parameter(
+     *         name="uuid",
+     *         in="path",
+     *         @OA\Schema(type="string"),
+     *         style="form",
+     *         required=true
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Page not found",
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *      ),
+     *  )
+     */
+    public function delete(string $uuid, UserRepository $repository): JsonResponse
+    {
+        $user = User::where('uuid', $uuid)->firstOrFail();
+        abort_if($user->is_admin, Response::HTTP_NOT_FOUND, 'User not found');
+        $repository->delete($user);
+
+        return RespondWith::success();
     }
 }
