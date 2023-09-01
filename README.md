@@ -36,7 +36,6 @@ A collection REST API endpoints for FE team to build the UI of the Pet Shop App
 ### API Endpoints 📬
 Method | Route | Description
 --- | --- | ---
-`GET` | `/api/products` | Fetch all products
 `POST` | `api/v1/admin/create` |
 `POST` | `api/v1/admin/login` |
 `GET` | `api/v1/admin/user-listing` |
