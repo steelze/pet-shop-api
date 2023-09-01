@@ -76,6 +76,15 @@ These instructions will get you a copy of the project up and running on your loc
     $ cp .env.example .env
     $ php artisan key:generate
     ```
+  - Open terminal and run the following commands
+    to create a pair of public and private key
+    ```
+    // Passphrase - sO9sH6qT8jA0wV5gE5eT3kY2
+
+    $ openssl genrsa -passout pass:sO9sH6qT8jA0wV5gE5eT3kY2 -out storage/jwt/private.pem -aes256 4096
+    $ openssl rsa -passin pass:sO9sH6qT8jA0wV5gE5eT3kY2 -pubout -in storage/jwt/private.pem -out storage/jwt/public.pem
+    ```
+  - We should have public.pem and private.pem in our storage/jwt folder.
   - Run Migration
     ```
     // Update .env file with correct DB credentials
