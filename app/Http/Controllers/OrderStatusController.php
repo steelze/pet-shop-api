@@ -3,20 +3,20 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\RespondWith;
-use App\Http\Requests\BrandRequest;
-use App\Models\Brand;
+use App\Http\Requests\OrderStatusRequest;
+use App\Models\OrderStatus;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 
-class BrandController extends Controller
+class OrderStatusController extends Controller
 {
     /**
      * @OA\Get(
-     *      path="/api/v1/brands",
-     *      operationId="getAllBrands",
-     *      tags={"Brands"},
-     *      summary="List all brands",
+     *      path="/api/v1/order-statuses",
+     *      operationId="getAllOrder Statuses",
+     *      tags={"Order Statuses"},
+     *      summary="List all order status",
      *      @OA\Parameter(
      *         name="page",
      *         in="query",
@@ -67,19 +67,19 @@ class BrandController extends Controller
         $sortBy = in_array($request->sortBy, $allowedSortBy) ? $request->sortBy : null;
         $sortByDirection = $request->boolean('desc', false) ? 'desc' : 'asc';
 
-        $brands = Brand::when($request->title, fn($sql, $value) => $sql->where('title', 'like', "%{$value}%"))
+        $categories = OrderStatus::when($request->title, fn($sql, $value) => $sql->where('title', 'like', "%{$value}%"))
             ->when(!empty($sortBy), fn($sql) => $sql->orderBy($sortBy, $sortByDirection))
             ->paginate($limit);
 
-        return RespondWith::raw($brands);
+        return RespondWith::raw($categories);
     }
 
     /**
      * @OA\Get(
-     *      path="/api/v1/brand/{uuid}",
-     *      operationId="fetchOneBrand",
-     *      tags={"Brands"},
-     *      summary="Fetch a brand",
+     *      path="/api/v1/order-statuse/{uuid}",
+     *      operationId="fetchOneOrderStatus",
+     *      tags={"Order Statuses"},
+     *      summary="Fetch an order status",
      *      @OA\Parameter(
      *         name="uuid",
      *         in="path",
@@ -103,16 +103,16 @@ class BrandController extends Controller
      */
     public function findOne(string $uuid): JsonResponse
     {
-        $brand = Brand::where('uuid', $uuid)->firstOrFail();
-        return RespondWith::success($brand);
+        $status = OrderStatus::where('uuid', $uuid)->firstOrFail();
+        return RespondWith::success($status);
     }
 
     /**
      * @OA\Post(
-     *      path="/api/v1/brand/create",
-     *      operationId="createBrand",
-     *      tags={"Brands"},
-     *      summary="Create a new brand",
+     *      path="/api/v1/order-status/create",
+     *      operationId="createOrderStatus",
+     *      tags={"Order Statuses"},
+     *      summary="Create a new order status",
      *      security={{"bearerAuth": {}}},
      *      @OA\RequestBody(
      *          required=true,
@@ -124,7 +124,7 @@ class BrandController extends Controller
      *                  properties={
      *                      @OA\Property(
      *                          property="title",
-     *                          description="Brand title",
+     *                          description="OrderStatus title",
      *                          type="string",
      *                      ),
      *                  },
@@ -149,20 +149,19 @@ class BrandController extends Controller
      *      ),
      *  )
      */
-    public function create(BrandRequest $request): JsonResponse
+    public function create(OrderStatusRequest $request): JsonResponse
     {
-        $slug = Str::slug($request->title);
-        $brand = Brand::create(['title' => $request->title, 'slug' => $slug]);
+        $status = OrderStatus::create(['title' => $request->title]);
 
-        return RespondWith::success($brand);
+        return RespondWith::success($status);
     }
 
     /**
      * @OA\Put(
-     *      path="/api/v1/brand/{uuid}",
-     *      operationId="updateBrand",
-     *      tags={"Brands"},
-     *      summary="Update an existing brand",
+     *      path="/api/v1/order-status/{uuid}",
+     *      operationId="updateOrderStatus",
+     *      tags={"Order Statuses"},
+     *      summary="Update an existing order status",
      *      security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="uuid",
@@ -181,7 +180,7 @@ class BrandController extends Controller
      *                  properties={
      *                      @OA\Property(
      *                          property="title",
-     *                          description="Brand title",
+     *                          description="OrderStatus title",
      *                          type="string",
      *                      ),
      *                  },
@@ -210,22 +209,21 @@ class BrandController extends Controller
      *      ),
      *  )
      */
-    public function update(BrandRequest $request, string $uuid): JsonResponse
+    public function update(OrderStatusRequest $request, string $uuid): JsonResponse
     {
-        $brand = Brand::where('uuid', $uuid)->firstOrFail();
+        $status = OrderStatus::where('uuid', $uuid)->firstOrFail();
 
-        $slug = Str::slug($request->title);
-        $brand->update(['title' => $request->title, 'slug' => $slug]);
+        $status->update(['title' => $request->title]);
 
-        return RespondWith::success($brand);
+        return RespondWith::success($status);
     }
 
     /**
      * @OA\Delete(
-     *      path="/api/v1/brand/{uuid}",
-     *      operationId="deleteBrand",
-     *      tags={"Brands"},
-     *      summary="Delete an existing brand",
+     *      path="/api/v1/order-status/{uuid}",
+     *      operationId="deleteOrderStatus",
+     *      tags={"Order Statuses"},
+     *      summary="Delete an existing order status",
      *      security={{"bearerAuth": {}}},
      *      @OA\Parameter(
      *         name="uuid",
@@ -258,8 +256,8 @@ class BrandController extends Controller
      */
     public function delete(string $uuid): JsonResponse
     {
-        $brand = Brand::where('uuid', $uuid)->firstOrFail();
-        $brand->delete();
+        $status = OrderStatus::where('uuid', $uuid)->firstOrFail();
+        $status->delete();
 
         return RespondWith::success();
     }

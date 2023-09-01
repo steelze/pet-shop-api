@@ -70,6 +70,12 @@ Route::prefix('v1')->group(function(): void {
             Route::put('{uuid}', 'update');
             Route::delete('{uuid}', 'delete');
         });
+
+        Route::controller(OrderStatusController::class)->prefix('order-status')->group(function(): void {
+            Route::post('create', 'create');
+            Route::put('{uuid}', 'update');
+            Route::delete('{uuid}', 'delete');
+        });
     });
 
     // Unprotected Routes
@@ -81,5 +87,10 @@ Route::prefix('v1')->group(function(): void {
     Route::controller(BrandController::class)->group(function(): void {
         Route::get('brand/{uuid}', 'findOne');
         Route::get('brands', 'listAll');
+    });
+
+    Route::controller(OrderStatusController::class)->group(function(): void {
+        Route::get('order-status/{uuid}', 'findOne');
+        Route::get('order-statuses', 'listAll');
     });
 });
