@@ -13,6 +13,71 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ResetPasswordController extends Controller
 {
+    /**
+     * @OA\Post(
+     *      path="/api/v1/user/reset-password-token",
+     *      operationId="resetPassword",
+     *      tags={"User"},
+     *      summary="Reset a password with the token",
+     *      @OA\RequestBody(
+     *          required=true,
+     *          @OA\MediaType(
+     *              mediaType="application/x-www-form-urlencoded",
+     *              @OA\Schema(
+     *                  type="object",
+     *                  required={"token", "email", "password", "password_confirmation"},
+     *                  properties={
+     *                      @OA\Property(
+     *                          property="first_name",
+     *                          description="User firstname",
+     *                          type="string",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="token",
+     *                          description="User reset token",
+     *                          type="string",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string",
+     *                          description="User email",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string",
+     *                          description="User password",
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password_confirmation",
+     *                          type="string",
+     *                          description="User password",
+     *                      ),
+     *                  },
+     *              ),
+     *          ),
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="OK",
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthorized",
+     *      ),
+     *      @OA\Response(
+     *          response=404,
+     *          description="Page not found",
+     *      ),
+     *      @OA\Response(
+     *          response=422,
+     *          description="Unprocessable Entity",
+     *      ),
+     *      @OA\Response(
+     *          response=500,
+     *          description="Internal server error",
+     *      ),
+     *  )
+     */
     public function __invoke(ResetPasswordRequest $request): JsonResponse
     {
         // Here we will attempt to reset the user's password. If it is successful we
