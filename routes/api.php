@@ -27,8 +27,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::prefix('v1')->group(function(): void {
-    Route::middleware('jwt.auth')
-        ->get('user', fn (Request $request): JsonResponse => RespondWith::success($request->user()->toArray()));
+    Route::middleware('jwt.auth')->get('user', [ProfileController::class, 'view']);
 
     // User Routes
     Route::prefix('user')->group(function(): void {

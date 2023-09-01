@@ -33,10 +33,7 @@ class ProfileController extends Controller
      */
     public function view(Request $request): JsonResponse
     {
-        $payload = array_merge($request->validated(), ['is_marketing' => $request->boolean('is_marketing')]);
-        $user = $repository->update(auth()->user(), $payload);
-
-        return RespondWith::success($user->toArray());
+        return RespondWith::success($request->user());
     }
 
     /**
